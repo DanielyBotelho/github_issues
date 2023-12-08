@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "GithubIssues"
 include(":app")
- 
+
+include(":core:network")
