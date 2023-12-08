@@ -18,6 +18,9 @@ output.json
 # IntelliJ
 *.iml
 .idea/*
+.idea/gradle.xml
+.idea/kotlinc.xml
+.idea/misc.xml
 misc.xml
 
 # Keystore files

@@ -1,3 +1,4 @@
+import kotlinx.coroutines.flow.Flow
 import model.Issue
 
 interface IssuesNetworkDataSource {

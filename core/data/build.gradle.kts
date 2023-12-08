@@ -5,23 +5,23 @@ plugins {
 }
 
 android {
-    buildFeatures {
-        buildConfig = true
-    }
-    namespace = "com.murua.githubissues.core.network"
+    namespace = "com.murua.githubissues.core.data"
     compileSdk = 34
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            isReturnDefaultValues = true
         }
     }
 }
 
 dependencies {
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.kotlin.serialization)
+    implementation(project(":core:common"))
+    implementation(project(":core:network"))
+    implementation(libs.core.ktx)
+    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation(libs.okhttp.logging)
 }

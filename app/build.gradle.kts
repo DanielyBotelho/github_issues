@@ -6,15 +6,15 @@ plugins {
 
 android {
     namespace = "com.murua.githubissues"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.murua.githubissues"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-        compileSdk = 33
+        compileSdk = 34
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
