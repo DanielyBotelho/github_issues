@@ -12,7 +12,7 @@ data class Issue(
     val user: User,
     val title: String = "",
     val state: Status,
-    val url: String,
+    @SerialName("html_url") val url: String,
     @SerialName("body") val description: String? = "",
     @SerialName("created_at") val createdAt: String
 )

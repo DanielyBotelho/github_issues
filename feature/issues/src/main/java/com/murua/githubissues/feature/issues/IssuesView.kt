@@ -1,6 +1,7 @@
 package com.murua.githubissues.feature.issues
 
 import androidx.annotation.VisibleForTesting
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -16,18 +18,20 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.onClick
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,13 +50,31 @@ fun IssuesRoute(
     val issuesUiState: IssuesUiState by viewModel.issuesState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.getIssues()
+        if (issuesUiState == IssuesUiState.Default) {
+            viewModel.getIssues()
+        }
     }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
-                title = { Text("Github Issues") }
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(8.dp),
+                title = {
+                    Text(
+                        text = "Github Issues",
+                        color = Color.White,
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                },
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                )
             )
         },
         content = {
@@ -62,7 +84,7 @@ fun IssuesRoute(
                     .padding(it),
                 onIssueClick = onIssueClick
             )
-        },
+        }
     )
 }
 
@@ -81,10 +103,11 @@ fun IssuesScreen(
         LazyColumn(
             state = state,
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
             when (issuesUiState) {
                 IssuesUiState.Loading -> item {
-                    println("Loading")
+                    LoadingState()
                 }
 
                 is IssuesUiState.Error -> { println("Erro...") }
@@ -126,20 +149,19 @@ fun IssueCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val clickActionLabel = "Teste"
-
     Card(
         onClick = onClick,
         shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         modifier = modifier
-            .semantics {
-                onClick(label = clickActionLabel, action = null)
-            }
             .padding(16.dp)
     ) {
         Row( modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically) {
             IssueAvatarImage(issueItem.avatarUrl)
             Box(
@@ -165,11 +187,11 @@ fun IssueAvatarImage(url: String) {
     GlideImage(
         model  = url,
         contentDescription = null,
-        loading = placeholder(R.drawable.ic_launcher_background),
-        failure = placeholder(androidx.core.R.drawable.ic_call_answer),
+        loading = placeholder(R.drawable.ic_launcher_foreground),
+        failure = placeholder(R.drawable.ic_launcher_foreground),
         modifier = Modifier
-            .width(80.dp)
-            .height(80.dp)
+            .width(70.dp)
+            .height(70.dp)
     )
 }
 
@@ -186,4 +208,15 @@ fun IssueState(
     state: String,
 ) {
     Text(state, style = MaterialTheme.typography.bodyLarge)
+}
+
+@Composable
+private fun LoadingState(modifier: Modifier = Modifier) {
+    CircularProgressIndicator(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentSize(),
+        color = MaterialTheme.colorScheme.primary,
+    )
 }

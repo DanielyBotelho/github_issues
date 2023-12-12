@@ -28,16 +28,12 @@ class IssuesViewModel @Inject constructor(
         get() = _issuesState.asStateFlow()
 
     fun getIssues() {
-        println("getIssues $_issuesState")
         viewModelScope.launch {
-            println("launch $_issuesState")
             _issuesState.emit(Loading)
 
             issuesUseCase().map {
-                println("${it}")
                 when (it) {
                     is ApiResult.Success -> {
-                        println("${it.data}")
                         _issuesState.emit(Success(it.data))
                     }
                     is ApiResult.Error -> {

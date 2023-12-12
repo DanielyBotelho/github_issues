@@ -15,7 +15,6 @@ import androidx.navigation.navArgument
 
 const val issuesRoute = "issues_route"
 const val issueDetailsRoute = "issue_details_route"
-const val webViewRoute = "webview/{url}"
 
 fun NavGraphBuilder.composeIssues(navController: NavHostController) {
     composable(route = issuesRoute) {
@@ -37,8 +36,8 @@ fun NavGraphBuilder.composeIssueDetails(navController: NavHostController) {
 
         IssueDetailsRoute(
             sharedUiState = state,
-            onWebViewClick = {
-                navController.navigate(webViewRoute)
+            onWebViewClick = { url ->
+                navController.navigate("webview?item=$url")
                              },
             onPopBackStack = { navController.popBackStack() }
         )
@@ -47,7 +46,7 @@ fun NavGraphBuilder.composeIssueDetails(navController: NavHostController) {
 
 fun NavGraphBuilder.composeWebView(navController: NavHostController) {
     composable(
-        route = webViewRoute,
+        route = "webview?item={url}",
         arguments = listOf(navArgument("url") { type = NavType.StringType })
     ) {
         WebViewRoute(
