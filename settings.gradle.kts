@@ -20,3 +20,5 @@ include(":core:common")
 include(":core:network")
 include(":core:data")
 include(":core:domain")
+
+include(":feature:issues")

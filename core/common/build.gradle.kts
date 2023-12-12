@@ -1,17 +1,28 @@
 plugins {
     id("com.android.library")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 
 android {
     namespace = "com.murua.githubissues.core.common"
     compileSdk = 34
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 }

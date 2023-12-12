@@ -1,7 +1,8 @@
 plugins {
     id("com.android.library")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -10,6 +11,11 @@ android {
     }
     namespace = "com.murua.githubissues.core.domain"
     compileSdk = 34
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
@@ -17,9 +23,15 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:common"))
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 }

@@ -1,12 +1,18 @@
 plugins {
     id("com.android.library")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kapt)
+    id("kotlin-parcelize")
 }
 
 android {
     namespace = "com.murua.githubissues.core.data"
     compileSdk = 34
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 
     testOptions {
         unitTests {
@@ -16,12 +22,19 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:network"))
+
     implementation(libs.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 }

@@ -1,19 +1,33 @@
 plugins {
     id("com.android.library")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kapt)
 }
 
 android {
+    namespace = "com.murua.githubissues.core.network"
+    compileSdk = 34
+
     buildFeatures {
         buildConfig = true
     }
-    namespace = "com.murua.githubissues.core.network"
-    compileSdk = 34
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
         }
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
@@ -22,6 +36,6 @@ dependencies {
     implementation(libs.retrofit.kotlin.serialization)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
     implementation(libs.okhttp.logging)
 }
