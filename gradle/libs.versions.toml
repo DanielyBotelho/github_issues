@@ -27,6 +27,7 @@ androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
+turbine = "1.0.0"
 
 [libraries]
 
@@ -62,7 +63,6 @@ okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor",
 
 ### Coroutines ###
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 
 ### Glide ###
 glide = { group="com.github.bumptech.glide", name = "glide", version.ref = "glide" }
@@ -84,6 +84,8 @@ ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
