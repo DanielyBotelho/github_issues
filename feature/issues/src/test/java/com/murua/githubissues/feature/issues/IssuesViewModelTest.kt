@@ -1,13 +1,14 @@
 package com.murua.githubissues.feature.issues
 
 import app.cash.turbine.test
-import com.murua.githubissues.core.common.ApiResult
 import com.murua.githubissues.core.domain.GetIssuesUseCase
 import com.murua.githubissues.feature.issues.home.IssuesUiState
 import com.murua.githubissues.feature.issues.home.IssuesViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import model.IssueItem
@@ -41,7 +42,7 @@ class IssuesViewModelTest {
 
     @Test
     fun getIssues_whenSuccess_shouldReturnsListOfIssues() = runTest {
-        val mockApiResult = ApiResult.Success(listOf(IssueItem.mock(), IssueItem.mock()))
+        val mockApiResult = listOf(IssueItem.mock(), IssueItem.mock())
         coEvery { issuesUseCase.invoke() } returns flowOf(mockApiResult)
 
         viewModel.getIssues()
@@ -49,13 +50,16 @@ class IssuesViewModelTest {
         viewModel.issuesState.test {
             val successState = awaitItem()
             assertTrue(successState is IssuesUiState.Success)
-            assertEquals(mockApiResult.data, successState.data)
+            assertEquals(mockApiResult, successState.data)
         }
     }
 
     @Test
     fun getIssues_whenLoading_shouldEmitLoadingState() = runTest {
-        coEvery { issuesUseCase.invoke() } returns flowOf(ApiResult.Loading)
+        coEvery { issuesUseCase.invoke() } returns flow {
+            delay(500)
+            emit(emptyList())
+        }
 
         viewModel.getIssues()
 
@@ -68,7 +72,10 @@ class IssuesViewModelTest {
     @Test
     fun getIssues_whenError_shouldEmitErrorState() = runTest {
         val errorMessage = "Simulated error message"
-        coEvery { issuesUseCase.invoke() } returns flowOf(ApiResult.Error(Exception(errorMessage)))
+
+        coEvery { issuesUseCase.invoke() } returns flow {
+            throw RuntimeException(errorMessage)
+        }
 
         viewModel.getIssues()
 
@@ -78,6 +85,7 @@ class IssuesViewModelTest {
             assertEquals(errorMessage, errorState.error)
         }
     }
+
 }
 
 private fun IssueItem.Companion.mock() =

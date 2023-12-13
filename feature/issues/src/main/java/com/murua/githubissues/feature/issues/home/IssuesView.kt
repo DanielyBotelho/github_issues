@@ -22,15 +22,21 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -39,6 +45,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.murua.githubissues.feature.issues.R
+import kotlinx.coroutines.launch
 import model.IssueItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,6 +56,8 @@ fun IssuesRoute(
     onIssueClick: (IssueItem) -> Unit,
 ) {
     val issuesUiState: IssuesUiState by viewModel.issuesState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         if (issuesUiState == IssuesUiState.Default) {
@@ -65,10 +74,10 @@ fun IssuesRoute(
                     .padding(8.dp),
                 title = {
                     Text(
-                        text = "Github Issues",
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.issues_topbar_title),
                         color = Color.White,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center
                     )
                 },
@@ -78,12 +87,18 @@ fun IssuesRoute(
                 )
             )
         },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = {
             IssuesScreen(
-                issuesUiState = issuesUiState,
                 modifier = modifier
                     .padding(it),
-                onIssueClick = onIssueClick
+                issuesUiState = issuesUiState,
+                onIssueClick = onIssueClick,
+                onShowErrorSnackBar = {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(it)
+                    }
+                }
             )
         }
     )
@@ -92,26 +107,31 @@ fun IssuesRoute(
 @VisibleForTesting
 @Composable
 fun IssuesScreen(
-    issuesUiState: IssuesUiState,
     modifier: Modifier = Modifier,
-    onIssueClick: (IssueItem) -> Unit
+    issuesUiState: IssuesUiState,
+    onIssueClick: (IssueItem) -> Unit,
+    onShowErrorSnackBar: (String) -> Unit
 ) {
     val state = rememberLazyListState()
+    val context = LocalContext.current
 
     Box(
         modifier = modifier,
     ) {
         LazyColumn(
+            modifier = Modifier.background(MaterialTheme.colorScheme.background),
             state = state,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
             when (issuesUiState) {
                 IssuesUiState.Loading -> item {
                     LoadingState()
                 }
 
-                is IssuesUiState.Error -> { println("Erro...") }
+                is IssuesUiState.Error -> {
+                    onShowErrorSnackBar(context.getString(R.string.issues_error_message))
+                }
+
                 is IssuesUiState.Success -> {
                     issueCardItems(
                         items = issuesUiState.data,
@@ -126,19 +146,19 @@ fun IssuesScreen(
 }
 
 fun LazyListScope.issueCardItems(
-    items: List<IssueItem>,
     itemModifier: Modifier = Modifier,
+    items: List<IssueItem>,
     onIssueClick: (IssueItem) -> Unit
 ) = items(
     items = items,
     key = { it.id },
     itemContent = { issue ->
         IssueCard(
+            modifier = itemModifier,
             issueItem = issue,
             onClick = {
                 onIssueClick(issue)
-            },
-            modifier = itemModifier,
+            }
         )
     },
 )
@@ -146,9 +166,9 @@ fun LazyListScope.issueCardItems(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IssueCard(
+    modifier: Modifier = Modifier,
     issueItem: IssueItem,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Card(
         onClick = onClick,
@@ -157,13 +177,15 @@ fun IssueCard(
             defaultElevation = 8.dp
         ),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        modifier = modifier
-            .padding(16.dp)
+        modifier = modifier.padding(16.dp)
     ) {
-        Row( modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        )
+        {
             IssueAvatarImage(issueItem.avatarUrl)
             Box(
                 modifier = Modifier.padding(8.dp),
@@ -171,8 +193,8 @@ fun IssueCard(
                 Column {
                     Spacer(modifier = Modifier.height(12.dp))
                     IssueTitle(
-                        issueItem.title,
                         modifier = Modifier.fillMaxWidth((.8f)),
+                        issueItem.title
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     IssueState(issueItem.state.stateName)
@@ -186,7 +208,7 @@ fun IssueCard(
 @Composable
 fun IssueAvatarImage(url: String) {
     GlideImage(
-        model  = url,
+        model = url,
         contentDescription = null,
         loading = placeholder(R.drawable.ic_launcher_foreground),
         failure = placeholder(R.drawable.ic_launcher_foreground),
@@ -198,17 +220,24 @@ fun IssueAvatarImage(url: String) {
 
 @Composable
 fun IssueTitle(
-    issueTitle: String,
     modifier: Modifier = Modifier,
+    issueTitle: String
 ) {
-    Text(issueTitle, style = MaterialTheme.typography.titleMedium, modifier = modifier)
+    Text(
+        modifier = modifier,
+        text = issueTitle,
+        style = MaterialTheme.typography.titleMedium,
+    )
 }
 
 @Composable
 fun IssueState(
     state: String,
 ) {
-    Text(state, style = MaterialTheme.typography.bodyLarge)
+    Text(
+        state,
+        style = MaterialTheme.typography.bodyLarge
+    )
 }
 
 @Composable

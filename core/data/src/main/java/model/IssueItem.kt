@@ -2,6 +2,10 @@ package model
 
 import android.os.Parcelable
 import com.murua.githubissues.core.network.model.Issue
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -23,9 +27,13 @@ class IssueItem(
 fun Issue.asDataModel() = IssueItem(
     id = id,
     avatarUrl = user.avatarUrl,
-    date = createdAt,
+    date = createdAt.toInstant().toLocalDateTime(TimeZone.UTC).toShortDate(),
     title = title,
     description = description ?: "",
     url = url,
     state = State.valueOf(state.name)
 )
+
+fun LocalDateTime.toShortDate() =
+    "${dayOfMonth}/${monthNumber}/${year}"
+

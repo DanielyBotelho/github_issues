@@ -1,7 +1,8 @@
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+
 package com.murua.githubissues.core.data.repository
 
 import app.cash.turbine.test
-import com.murua.githubissues.core.common.ApiResult
 import com.murua.githubissues.core.data.model.mock
 import com.murua.githubissues.core.network.IssuesNetworkDataSource
 import com.murua.githubissues.core.network.model.Issue
@@ -17,12 +18,13 @@ import org.junit.Test
 import repository.IssuesRepository
 import repository.IssuesRepositoryImpl
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class IssuesRepositoryTest {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     private val testScope = TestScope(UnconfinedTestDispatcher())
+
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     private lateinit var subject: IssuesRepository
 
@@ -33,6 +35,7 @@ class IssuesRepositoryTest {
         networkDataSource = mockk<IssuesNetworkDataSource>()
 
         subject = IssuesRepositoryImpl(
+            testDispatcher,
             networkDataSource = networkDataSource
         )
     }
@@ -44,21 +47,18 @@ class IssuesRepositoryTest {
             coEvery { networkDataSource.getIssues() } returns mockNetworkData
 
             subject.getIssues().test {
-                assertTrue(awaitItem() is ApiResult.Loading)
-
                 val successResult = awaitItem()
-                assertTrue(successResult is ApiResult.Success)
 
                 val expectedIds = mockNetworkData.map { it.asDataModel().id }
-                val actualIds = successResult.data.map { it.id }
+                val actualIds = successResult.map { it.id }
                 assertEquals(expectedIds, actualIds, "Ids do not match")
 
                 val expectedStates = mockNetworkData.map { it.asDataModel().state }
-                val actualStates = successResult.data.map { it.state }
+                val actualStates = successResult.map { it.state }
                 assertEquals(expectedStates, actualStates, "States do not match")
 
                 val expectedAvatarUrls = mockNetworkData.map { it.asDataModel().avatarUrl }
-                val actualAvatarUrls = successResult.data.map { it.avatarUrl }
+                val actualAvatarUrls = successResult.map { it.avatarUrl }
                 assertEquals(expectedAvatarUrls, actualAvatarUrls, "Avatar URLs do not match")
 
                 awaitComplete()

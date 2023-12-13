@@ -21,7 +21,7 @@ class IssueItemTest {
         assertEquals(State.OPEN, issueItem.state)
         assertEquals("//:url", issueItem.url)
         assertEquals("Descrição do Issue", issueItem.description)
-        assertEquals("2023-12-06T14:34:59Z", issueItem.date)
+        assertEquals("6/12/2023", issueItem.date)
     }
 }
 

@@ -59,5 +59,5 @@ dependencies {
     kapt(libs.glide.compiler)
 
     testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.13.7")
+    testImplementation(libs.mockk)
 }

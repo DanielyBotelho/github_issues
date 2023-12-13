@@ -7,33 +7,34 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.murua.githubissues.feature.issues.R
 import com.murua.githubissues.feature.issues.home.IssueAvatarImage
 import model.IssueItem
 
 @Composable
 fun IssueDetailsRoute(
-    modifier: Modifier = Modifier,
     sharedUiState: IssueItem?,
     onWebViewClick: (String) -> Unit,
     onPopBackStack: () -> Unit
 ) {
-
     if (sharedUiState != null) {
         IssueDetailScreen(
             details = sharedUiState,
@@ -54,25 +55,25 @@ fun IssueDetailScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.primary)
                     .padding(8.dp),
                 title = {
                     Text(
-                        text = "Issue",
+                        text = stringResource(R.string.issue_topbar_title),
                         color = Color.White,
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onPopBackStack) {
                         Icon(
-                            painter = painterResource(id = androidx.core.R.drawable.ic_call_decline_low),
-                            contentDescription = "back",
-                            tint = Color.White
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(
+                                R.string.issue_back_button_text
+                            ),
+                            tint = MaterialTheme.colorScheme.surface
                         )
                     }
                 },
@@ -130,7 +131,7 @@ fun IssueDetailsView(
             Button(
                 onClick = { onWebViewClick(details.url) }
             ) {
-                Text("Open on WebView")
+                Text(stringResource(R.string.issue_webview_button_title))
             }
         }
     }

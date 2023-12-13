@@ -3,6 +3,7 @@ package com.murua.githubissues.feature.issues.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.murua.githubissues.core.common.ApiResult
+import com.murua.githubissues.core.common.asResult
 import com.murua.githubissues.core.domain.GetIssuesUseCase
 import com.murua.githubissues.feature.issues.home.IssuesUiState.Default
 import com.murua.githubissues.feature.issues.home.IssuesUiState.Error
@@ -31,16 +32,18 @@ class IssuesViewModel @Inject constructor(
         viewModelScope.launch {
             _issuesState.emit(Loading)
 
-            issuesUseCase().map {
-                when (it) {
-                    is ApiResult.Success -> {
-                        _issuesState.emit(Success(it.data))
+            issuesUseCase()
+                .asResult()
+                .map {
+                    when (it) {
+                        is ApiResult.Success -> {
+                            _issuesState.emit(Success(it.data))
+                        }
+                        is ApiResult.Error -> {
+                            _issuesState.emit(Error(it.exception?.message ?: ""))
+                        }
+                        is ApiResult.Loading -> _issuesState.emit(Loading)
                     }
-                    is ApiResult.Error -> {
-                        _issuesState.emit(Error(it.exception?.message ?: ""))
-                    }
-                    is ApiResult.Loading -> _issuesState.emit(Loading)
-                }
             }.collect()
         }
     }

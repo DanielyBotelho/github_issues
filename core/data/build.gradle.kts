@@ -41,7 +41,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    implementation(libs.kotlinx.datetime)
 
     testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.13.7")
+    testImplementation(libs.mockk)
 }

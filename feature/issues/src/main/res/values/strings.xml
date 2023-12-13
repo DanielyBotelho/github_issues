@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">issues</string>
+    <string name="issues_topbar_title">Github Issues</string>
+    <string name="issues_error_message">Failed to fetch issues</string>
+    <string name="issue_topbar_title">Issue</string>
+    <string name="issue_back_button_text">back</string>
+    <string name="issue_webview_button_title">Open on WebView</string>
 </resources>
