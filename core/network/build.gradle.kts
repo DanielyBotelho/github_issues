@@ -1,9 +1,10 @@
 plugins {
-    id("com.android.library")
-    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.secrets)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
 }
 
 android {
@@ -23,6 +24,10 @@ android {
             isIncludeAndroidResources = true
         }
     }
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.defaults.properties"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {

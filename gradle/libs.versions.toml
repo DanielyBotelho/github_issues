@@ -25,6 +25,7 @@ espresso-core = "3.5.1"
 turbine = "1.0.0"
 kotlinxDatetime = "0.4.1"
 mockk = "1.13.7"
+secrets = "2.0.1"
 
 [libraries]
 
@@ -79,6 +80,8 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk"}
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
