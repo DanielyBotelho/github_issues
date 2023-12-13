@@ -15,4 +15,6 @@ data class Issue(
     @SerialName("html_url") val url: String,
     @SerialName("body") val description: String? = "",
     @SerialName("created_at") val createdAt: String
-)
+) {
+    companion object
+}

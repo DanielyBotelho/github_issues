@@ -1,6 +1,7 @@
 package model
 
 import android.os.Parcelable
+import com.murua.githubissues.core.network.model.Issue
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -15,4 +16,16 @@ class IssueItem(
     val description: String,
     val url: String,
     val state: State
-) : Parcelable
+) : Parcelable {
+    companion object
+}
+
+fun Issue.asDataModel() = IssueItem(
+    id = id,
+    avatarUrl = user.avatarUrl,
+    date = createdAt,
+    title = title,
+    description = description ?: "",
+    url = url,
+    state = State.valueOf(state.name)
+)

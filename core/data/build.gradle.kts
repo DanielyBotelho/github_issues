@@ -10,6 +10,10 @@ android {
     namespace = "com.murua.githubissues.core.data"
     compileSdk = 34
 
+    defaultConfig {
+        minSdk = 24
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -37,4 +41,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.13.7")
 }

@@ -1,4 +1,4 @@
-package com.murua.githubissues.feature.issues
+package com.murua.githubissues.feature.issues.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.murua.githubissues.feature.issues.home.IssueAvatarImage
 import model.IssueItem
 
 @Composable

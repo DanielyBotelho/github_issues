@@ -12,6 +12,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.murua.githubissues.feature.issues.details.IssueDetailsRoute
+import com.murua.githubissues.feature.issues.home.IssuesRoute
+import com.murua.githubissues.feature.issues.webview.WebViewRoute
 
 const val issuesRoute = "issues_route"
 const val issueDetailsRoute = "issue_details_route"

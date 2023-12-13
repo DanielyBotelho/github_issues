@@ -28,6 +28,7 @@ espresso-core = "3.5.1"
 appcompat = "1.6.1"
 constraintlayout = "2.1.4"
 turbine = "1.0.0"
+kotlinxDatetime = "0.4.1"
 
 [libraries]
 
@@ -75,6 +76,9 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
 hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
+
+### Others ###
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 ### Test ###
 junit = { group = "junit", name = "junit", version.ref = "junit" }

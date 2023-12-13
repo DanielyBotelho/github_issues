@@ -1,13 +1,13 @@
-package com.murua.githubissues.feature.issues
+package com.murua.githubissues.feature.issues.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.murua.githubissues.core.common.ApiResult
 import com.murua.githubissues.core.domain.GetIssuesUseCase
-import com.murua.githubissues.feature.issues.IssuesUiState.Default
-import com.murua.githubissues.feature.issues.IssuesUiState.Error
-import com.murua.githubissues.feature.issues.IssuesUiState.Loading
-import com.murua.githubissues.feature.issues.IssuesUiState.Success
+import com.murua.githubissues.feature.issues.home.IssuesUiState.Default
+import com.murua.githubissues.feature.issues.home.IssuesUiState.Error
+import com.murua.githubissues.feature.issues.home.IssuesUiState.Loading
+import com.murua.githubissues.feature.issues.home.IssuesUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

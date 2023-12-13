@@ -1,4 +1,4 @@
-package com.murua.githubissues.feature.issues
+package com.murua.githubissues.feature.issues.webview
 
 import android.webkit.WebView
 import android.webkit.WebViewClient

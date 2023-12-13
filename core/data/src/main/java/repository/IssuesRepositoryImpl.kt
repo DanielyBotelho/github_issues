@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import model.IssueItem
-import model.State
+import model.asDataModel
 import javax.inject.Inject
 
 class IssuesRepositoryImpl @Inject constructor(
@@ -18,15 +18,7 @@ class IssuesRepositoryImpl @Inject constructor(
         return flowOf(networkDataSource.getIssues())
             .map { list ->
                 list.map {
-                    IssueItem(
-                        it.id,
-                        it.user.avatarUrl,
-                        it.createdAt,
-                        it.title,
-                        it.description ?: "",
-                        it.url,
-                        State.valueOf(it.state.name)
-                    )
+                    it.asDataModel()
                 }
             }
             .asResult()
