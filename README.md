@@ -7,6 +7,7 @@ Você deve desenvolver uma aplicação Android Nativa em Kotlin que consuma a AP
 O aplicativo deve conter:
 
 Uma tela com a lista de issues do repositório ( https://api.github.com/repos/JetBrains/kotlin/issues ). Cada item da lista deve conter os seguintes elementos:
+Avatar do usuário que criou a issue
 Título do issue
 Estado do issue (ABERTO, FECHADO)
 
@@ -20,19 +21,16 @@ Um botão que abre o browser com o link issue do site do github
 Requisitos obrigatórios:
 
 Kotlin
-RxJava 2
-Koin (preferencialmente) ou Dagger 2
-Testes Unitários (de preferência com mocck / junit)
-OkHttp3 (preferencialmente) ou Retrofit 2
+Programação reativa
+Injeção de dependência
+Testes Unitários
+Clean Architecture
+MVVM
+Material 3
 
 Requisitos opcionais:
-
-
-MVVM
-AndroidX
-Coroutines
-LiveData / Navigation / Action Components
-
+Jetpack Compose
+Modularização
 
 Pontos de avaliação
 
