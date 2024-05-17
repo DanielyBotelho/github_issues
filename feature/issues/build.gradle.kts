@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kapt)
     alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+//    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -49,14 +51,16 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
     kapt(libs.hilt.compiler)
 
-    implementation(libs.androidx.compose.bom)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
     implementation(libs.glide)
     implementation(libs.glide.compose)
     kapt(libs.glide.compiler)
+
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(kotlin("test"))
     testImplementation(libs.mockk)

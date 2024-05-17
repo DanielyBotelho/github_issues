@@ -1,22 +1,23 @@
 [versions]
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
-kotlinxSerializationJson = "1.6.2"
+kotlinxSerializationPlugin = "1.9.24"
+kotlinxSerializationJson = "1.6.3"
 androidxHiltNavigationCompose = "1.1.0"
 androidxComposeMaterial3 = "1.1.2"
 hilt = "2.49"
 glide-compose = "1.0.0-beta01"
 glide = "4.14.2"
 lifecycle-runtime-ktx = "2.6.2"
-kotlin = "1.9.21"
+kotlin = "1.9.24"
 okhttp = "4.12.0"
-kapt = "1.9.21"
+kapt = "1.9.24"
 androidxLifecycle = "2.6.2"
-androidxNavigation = "2.7.5"
+androidxNavigation = "2.8.0-beta01"
 core-ktx = "1.12.0"
 kotlinxCoroutines = "1.7.3"
 androidxComposeBom = "2023.10.01"
-androidxComposeCompiler = "1.5.6"
+androidxComposeCompiler = "1.5.14"
 androidxActivity = "1.8.1"
 agp = "8.2.0"
 junit = "4.13.2"
@@ -83,10 +84,11 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 
+navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerializationPlugin" }
 
 [bundles]
 

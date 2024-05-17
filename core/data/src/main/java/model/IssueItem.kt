@@ -13,7 +13,7 @@ enum class State(val stateName: String): Parcelable { OPEN("open"), CLOSED("clos
 
 @Parcelize
 class IssueItem(
-    val id: Int,
+    val id: Long,
     val avatarUrl: String,
     val date: String,
     val title: String,

@@ -8,13 +8,11 @@ enum class Status { @SerialName("open") OPEN, @SerialName("closed") CLOSED }
 
 @Serializable
 data class Issue(
-    val id: Int,
+    val id: Long,
     val user: User,
     val title: String = "",
     val state: Status,
     @SerialName("html_url") val url: String,
     @SerialName("body") val description: String? = "",
     @SerialName("created_at") val createdAt: String
-) {
-    companion object
-}
+)

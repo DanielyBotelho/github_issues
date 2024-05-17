@@ -8,40 +8,35 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.toRoute
 import com.murua.githubissues.feature.issues.details.IssueDetailsRoute
 import com.murua.githubissues.feature.issues.home.IssuesRoute
 import com.murua.githubissues.feature.issues.webview.WebViewRoute
-
-const val issuesRoute = "issues_route"
-const val issueDetailsRoute = "issue_details_route"
-const val issueWebViewRoute = "webview?item="
-const val issueWebViewParamKey = "url"
+import kotlinx.serialization.Serializable
 
 fun NavGraphBuilder.composeIssues(navController: NavHostController) {
-    composable(route = issuesRoute) {
+    composable<IssuesScreen> {
         val viewModel = sharedViewModel<SharedViewModel>(navController = navController)
 
         IssuesRoute(
             onIssueClick = { item ->
                 viewModel.updateState(item)
-                navController.navigate(issueDetailsRoute)
+                navController.navigate(IssueDetailsScreen)
             }
         )
     }
 }
 
 fun NavGraphBuilder.composeIssueDetails(navController: NavHostController) {
-    composable(route = issueDetailsRoute) {
+    composable<IssueDetailsScreen> {
         val viewModel = sharedViewModel<SharedViewModel>(navController = navController)
         val state by viewModel.sharedState.collectAsStateWithLifecycle()
 
         IssueDetailsRoute(
             sharedUiState = state,
             onWebViewClick = { url ->
-                navController.navigate("$issueWebViewRoute$url")
+                navController.navigate(IssueWebViewScreen(url))
                              },
             onPopBackStack = { navController.popBackStack() }
         )
@@ -49,12 +44,11 @@ fun NavGraphBuilder.composeIssueDetails(navController: NavHostController) {
 }
 
 fun NavGraphBuilder.composeWebView(navController: NavHostController) {
-    composable(
-        route = "$issueWebViewRoute{$issueWebViewParamKey}",
-        arguments = listOf(navArgument(issueWebViewParamKey) { type = NavType.StringType })
-    ) {
+    composable<IssueWebViewScreen> {
+        val webViewScreen: IssueWebViewScreen = it.toRoute()
+
         WebViewRoute(
-            url = it.arguments?.getString(issueWebViewParamKey) ?: "",
+            url = webViewScreen.url,
             onPopBackStack = { navController.popBackStack() }
         )
     }
@@ -62,5 +56,17 @@ fun NavGraphBuilder.composeWebView(navController: NavHostController) {
 
 @Composable
 inline fun <reified T : ViewModel> sharedViewModel(navController: NavController): T {
-    return viewModel(navController.getBackStackEntry(issuesRoute))
+    return viewModel(navController.getBackStackEntry(IssuesScreen))
 }
+
+@Serializable
+open class IssuesGraphDestination
+
+@Serializable
+object IssuesScreen: IssuesGraphDestination()
+
+@Serializable
+object IssueDetailsScreen: IssuesGraphDestination()
+
+@Serializable
+data class IssueWebViewScreen(val url: String): IssuesGraphDestination()
