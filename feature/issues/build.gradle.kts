@@ -1,10 +1,9 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-//    alias(libs.plugins.navigation.safeargs)
 }
 
 android {
@@ -19,12 +18,6 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -49,7 +42,7 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.hilt.navigation.compose)
@@ -58,7 +51,7 @@ dependencies {
 
     implementation(libs.glide)
     implementation(libs.glide.compose)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.compiler)
 
     implementation(libs.kotlinx.serialization.json)
 

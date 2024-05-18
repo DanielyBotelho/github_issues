@@ -11,7 +11,7 @@ glide = "4.14.2"
 lifecycle-runtime-ktx = "2.6.2"
 kotlin = "1.9.24"
 okhttp = "4.12.0"
-kapt = "1.9.24"
+ksp = "1.9.24-1.0.20"
 androidxLifecycle = "2.6.2"
 androidxNavigation = "2.8.0-beta01"
 core-ktx = "1.12.0"
@@ -87,7 +87,7 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidxNavigation" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kapt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerializationPlugin" }
 
 [bundles]

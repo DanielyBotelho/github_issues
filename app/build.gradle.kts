@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.com.android.application)
     alias(libs.plugins.hilt)
-    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.org.jetbrains.kotlin.android)
 }
 
@@ -47,12 +47,6 @@ android {
     }
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KaptGenerateStubs::class) {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
 dependencies {
     implementation(project(":feature:issues"))
 
@@ -70,5 +64,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 }
